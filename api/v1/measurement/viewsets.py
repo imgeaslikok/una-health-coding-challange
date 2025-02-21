@@ -22,6 +22,10 @@ class GlucoseLevelViewset(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin
 ):
+    """
+        Returns GlucoseLevel data with user_id, start and stop date filters
+    """
+    
     queryset = models.GlucoseLevel.objects.all()
     serializer_class = serializers.GlucoseLevelSerializer
     ordering_fields = ["value", "timestamp"]

@@ -17,10 +17,12 @@ class GlucoseLevelCSVPopulateTest(APITestCase):
                                   "Device A,123456,0,100,25-02-2021 10:30\n" \
                                   "Device B,123457,0,120,26-02-2021 11:45\n"
 
-    @patch("os.listdir")
-    @patch("pandas.read_csv")
+    @patch("os.listdir") # Mocking os.listdir to avoid real file system interaction
+    @patch("pandas.read_csv") # Mocking pandas.read_csv to avoid reading actual files
     def test_create_glucose_levels_from_csv(self, mock_read_csv, mock_listdir):
+        # Mocking the list of files returned by os.listdir to simulate CSV files in the media folder
         mock_listdir.return_value = ["user1.csv"]
+        # Mocking the pandas read_csv to return a dataframe with the dummy CSV content
         mock_df = pd.read_csv(StringIO(self.dummy_csv_content))
         mock_read_csv.return_value = mock_df
 
