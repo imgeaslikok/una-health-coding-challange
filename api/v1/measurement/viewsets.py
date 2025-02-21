@@ -8,8 +8,11 @@ from django.http import HttpResponse
 
 from rest_framework import viewsets, mixins
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 
 from utils import responses
+from utils.validation import validate_datetime
+
 from measurement import models
 from api.v1.measurement import serializers
 
@@ -26,12 +29,24 @@ class GlucoseLevelViewset(
     def get_queryset(self):
         queryset = self.queryset
         user_id = self.request.query_params.get("user_id")
+
         start = self.request.query_params.get("start")
         stop = self.request.query_params.get("stop")
 
         if user_id:
             queryset = queryset.filter(user_id=user_id)
+            # handle invalid user_id param
+            if not queryset:
+                raise ValidationError("Invalid user_id")
 
+        # handle invalid datetime
+        if start and not validate_datetime(start):
+            raise ValidationError("Invalid datetime")
+        
+        if stop and not validate_datetime(stop):
+            raise ValidationError("Invalid datetime")
+        
+        # filter by date
         if start and stop:
             queryset = queryset.filter(timestamp__range=[start, stop])
         elif start:
@@ -42,7 +57,11 @@ class GlucoseLevelViewset(
         return queryset
 
     def create(self, request, *args, **kwargs):
+        """
+            Populates GlucoseLevel model from csv files
+        """
         files = [f for f in os.listdir(settings.MEDIA_ROOT) if f.endswith(".csv")]
+        # handle empty media folder
         if not files:
             return responses.http_no_content_with_details("No CSV files found in media folder")
         try:
@@ -71,6 +90,9 @@ class GlucoseLevelViewset(
         
     @action(detail=False, methods=["get"], url_path="export")
     def export(self, request):
+        """
+            Exports GlucoseLevel model as json file
+        """
         data = self.serializer_class(self.get_queryset(), many=True).data
         response = HttpResponse(
             content_type="application/json"
@@ -78,5 +100,3 @@ class GlucoseLevelViewset(
         response['Content-Disposition'] = 'attachment; filename="glucose_levels.json"'
         response.write(json.dumps(data, indent=4))
         return response
-
-
