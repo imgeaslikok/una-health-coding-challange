@@ -1,18 +1,70 @@
 # Una Health Coding Challange
 
-### Running locally
+API endpoints that returns glucose levels by filtering user_id, start and stop dates
+
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Run](#run)
+- [Test](#test)
+- [Documnetation](#documentation)
+
+
+## Installation
+
+1. Clone the repository.
 
 ```bash
-docker-compose up --build
+git clone https://github.com/imgeaslikok/una-health-coding-challange.git
 ```
 
-### Running tests
+2. Navigate to the project folder.
 
 ```bash
-docker exec -it core-web-1 bash
+cd una-health-coding-challange
+```
+
+
+## Run
+
+1. Build the project.
+
+```bash
+docker-compose build
+```
+
+2. Run the project.
+
+```bash
+docker-compose up
+```
+
+
+## Test
+
+1. Check container name.
+
+```bash
+docker ps
+```
+
+2. Get into the container.
+
+```bash
+docker exec -it <container_name> bash
+```
+
+2. Run tests
+```bash
 python manage.py test tests/api/v1
 ```
 
 API Docs can be found in -> `localhost:8000/api/docs/swagger-ui`
 
 
+
+## Documentation
+
+- ![API Docs](localhost:8000/api/docs)
+- ![Swagger UI](localhost:8000/api/docs/swagger-ui)
