@@ -23,14 +23,17 @@ class GlucoseLevelViewset(
     mixins.RetrieveModelMixin
 ):
     """
-        Returns GlucoseLevel data with user_id, start and stop date filters
+        Viewset to return GlucoseLevel data with only List and Retrieve methods
     """
-    
+
     queryset = models.GlucoseLevel.objects.all()
     serializer_class = serializers.GlucoseLevelSerializer
     ordering_fields = ["value", "timestamp"]
 
     def get_queryset(self):
+        """
+            Allows to filter by user_id, start and stop dates
+        """
         queryset = self.queryset
         user_id = self.request.query_params.get("user_id")
 
@@ -95,7 +98,7 @@ class GlucoseLevelViewset(
     @action(detail=False, methods=["get"], url_path="export")
     def export(self, request):
         """
-            Exports GlucoseLevel model as json file
+            Exports GlucoseLevel model as json
         """
         data = self.serializer_class(self.get_queryset(), many=True).data
         response = HttpResponse(

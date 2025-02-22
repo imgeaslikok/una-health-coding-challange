@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from datetime import datetime
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from rest_framework import status
 from rest_framework.test import APITestCase
 from io import StringIO
@@ -9,7 +9,10 @@ from django.conf import settings
 from measurement import models
 
 class GlucoseLevelCSVPopulateTest(APITestCase):
-
+    """
+        Test cases for GlucoseLevelViewset POST method that 
+        populates data from CSV and stores it in model
+    """
     def setUp(self):
         self.url = "/api/v1/levels/"
         models.GlucoseLevel.objects.all().delete()  # Clean up any existing data
@@ -39,6 +42,9 @@ class GlucoseLevelCSVPopulateTest(APITestCase):
 
 
 class GlucoseLevelViewsetTest(APITestCase):
+    """
+        Test cases for GlucoseLevelViewset GET methods
+    """
     def setUp(self):
         self.url = "/api/v1/levels/"
         models.GlucoseLevel.objects.all().delete()

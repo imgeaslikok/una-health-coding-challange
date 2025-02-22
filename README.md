@@ -28,13 +28,20 @@ cd una-health-coding-challange
 
 ## Run
 
-1. Build the project.
+1. Create an .env file in the project directory.
+
+```bash
+touch .env
+```
+
+
+2. Build the project.
 
 ```bash
 docker-compose build
 ```
 
-2. Run the project.
+3. Run the project.
 
 ```bash
 docker-compose up
@@ -66,5 +73,5 @@ API Docs can be found in -> `localhost:8000/api/docs/swagger-ui`
 
 ## Documentation
 
-- ![API Docs](localhost:8000/api/docs)
-- ![Swagger UI](localhost:8000/api/docs/swagger-ui)
+- API Docs ->   localhost:8000/api/docs
+- Swagger UI -> localhost:8000/api/docs/swagger-ui
