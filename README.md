@@ -67,9 +67,6 @@ docker exec -it <container_name> bash
 python manage.py test tests/api/v1
 ```
 
-API Docs can be found in -> `localhost:8000/api/docs/swagger-ui`
-
-
 
 ## Documentation
 
